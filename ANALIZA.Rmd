@@ -48,23 +48,59 @@ Anketa[which(Anketa$RadnoMjesto == 'b'), 'RadnoMjesto'] = 'Rukovodeće'
 Anketa[which(Anketa$VrstaPosla == 'c'), 'VrstaPosla'] = 'Određeno'
 Anketa[which(Anketa$VrstaPosla == 'd'), 'VrstaPosla'] = 'Neodređeno'
 
+```
 
+# DISTRIBUCIJA SPOLA ISPITANIKA
+```{r}
+P1 = ggplot(Anketa, aes(x=Spol, fill = Spol))+
+  geom_bar(stat='count') +
+  scale_fill_manual(values = c('Muško' = '#103778', 'Žensko' = '#FF7A48')) +
+  theme_minimal()+
+  ylab('Broj ispitanika')
 
+ggsave('Tablica1.png', P1)
+```
 
+### DISTRIBUCIJA GODINA ISPITANIKA
+```{r, echo=FALSE}
+P2 = ggplot(Anketa, aes(x=Dob)) +
+  geom_bar(stat='count', fill = '#151F30') +
+  theme_minimal() + 
+  ylab('Broj ispitanika')
+
+ggsave('Tablica2.png', P2 )
 
 ```
+### DISTRIBUCIJA RADNOG STAŽA ISPITANIKA
+```{r}
+P3 = ggplot(Anketa, aes(x=RadniStaž)) +
+  geom_bar(stat='count', fill = '#151F30') +
+  theme_minimal() +
+  ylab('Broj ispitanika') + 
+  xlab('Radni Staž')
+
+P3
+ggsave('Tablica3.png', P3)
+```
+### DISTRIBUCIJA BRAČNOG STATUSA ISPITANIKA
+```{r}
+P4 = ggplot(Anketa, aes(x=BračniStatus, fill=BračniStatus)) + 
+  geom_bar(stat = 'count') +
+  theme_minimal() +
+  ylab('Broj ispitanika') + 
+  xlab('Bračni status') + 
+  scale_fill_manual(values = c('Neoženjen/Neudata' = '#151F30', 'Oženjen/Udata/Izvanbračna zajednica' = '#103778', 'Razveden/a' = '#0593A2', 'Udovac/Udovica' = '#FF7A48'))
+
+P4
+ggsave('Tablica4.png', P4)
+```
+
 
 ```{r}
 
-```
+library(patchwork)
 
-
-
-
-
-### 
-```{r, echo=FALSE}
-
+ggsave("test.png",P1 + P2 + P3  + P4,width = 10,height = 10)
 ```
 
 
