@@ -1,0 +1,70 @@
+---
+title: "ANALIZA"
+output: html_document
+date: "2025-11-30"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Učitavanje rezultata ankete
+
+Funkcija koja mi označava mjesto u podacima za koje vrijedi filter koji unesem: Anketa[which(anketa$Spol) == 'a'), 'Spol'] - dakle, prvi dio uglate zagrade označava redove u kojima je upisana vrijednost a, a drugi dio uglade zagrade je označena kolona koju pretražujemo.
+```{r }
+library(readxl)
+library(tidyverse)
+Anketa <- read_excel("ANKETA_ODGOVORI.xlsx")
+
+
+
+```
+
+#Preimenovanje vrijednosti u kolonama
+```{r}
+Anketa[which(Anketa$Spol == 'a'), 'Spol'] = 'Muško'
+Anketa[which(Anketa$Spol == 'b'), 'Spol'] = 'Žensko'
+Anketa[which(Anketa$Dob == 'a'), 'Dob'] = '>=30'
+Anketa[which(Anketa$Dob == 'b'), 'Dob'] = '31-40'
+Anketa[which(Anketa$Dob == 'c'), 'Dob'] = '41-50'
+Anketa[which(Anketa$Dob == 'd'), 'Dob'] = '>=51'
+Anketa[which(Anketa$RadniStaž == 'a'), 'RadniStaž'] = '<=5'
+Anketa[which(Anketa$RadniStaž == 'b'), 'RadniStaž'] = '6-10'
+Anketa[which(Anketa$RadniStaž == 'c'), 'RadniStaž'] = '11-20'
+Anketa[which(Anketa$RadniStaž == 'd'), 'RadniStaž'] = '>=21'
+Anketa[which(Anketa$BračniStatus == 'a'), 'BračniStatus'] = 'Neoženjen/Neudata'
+Anketa[which(Anketa$BračniStatus == 'b'), 'BračniStatus'] = 'Oženjen/Udata/Izvanbračna zajednica'
+Anketa[which(Anketa$BračniStatus == 'c'), 'BračniStatus'] = 'Razveden/a'
+Anketa[which(Anketa$BračniStatus == 'd'), 'BračniStatus'] = 'Udovac/Udovica'
+Anketa[which(Anketa$Obrazovanje == 'a'), 'Obrazovanje'] = 'NKV'
+Anketa[which(Anketa$Obrazovanje == 'b'), 'Obrazovanje'] = 'KV'
+Anketa[which(Anketa$Obrazovanje == 'c'), 'Obrazovanje'] = 'SSS'
+Anketa[which(Anketa$Obrazovanje == 'd'), 'Obrazovanje'] = 'VKV'
+Anketa[which(Anketa$Obrazovanje == 'e'), 'Obrazovanje'] = 'VŠS'
+Anketa[which(Anketa$Obrazovanje == 'f'), 'Obrazovanje'] = 'VSS'
+Anketa[which(Anketa$Obrazovanje == 'g'), 'Obrazovanje'] = 'MR/DR'
+Anketa[which(Anketa$RadnoMjesto == 'a'), 'RadnoMjesto'] = 'Izvršno'
+Anketa[which(Anketa$RadnoMjesto == 'b'), 'RadnoMjesto'] = 'Rukovodeće'
+Anketa[which(Anketa$VrstaPosla == 'c'), 'VrstaPosla'] = 'Određeno'
+Anketa[which(Anketa$VrstaPosla == 'd'), 'VrstaPosla'] = 'Neodređeno'
+
+
+
+
+
+```
+
+```{r}
+
+```
+
+
+
+
+
+### 
+```{r, echo=FALSE}
+
+```
+
+
