@@ -14,6 +14,7 @@ Funkcija koja mi označava mjesto u podacima za koje vrijedi filter koji unesem:
 ```{r }
 library(readxl)
 library(tidyverse)
+library(patchwork)
 Anketa <- read_excel("ANKETA_ODGOVORI.xlsx")
 
 
@@ -82,25 +83,69 @@ P3 = ggplot(Anketa, aes(x=RadniStaž)) +
 P3
 ggsave('Tablica3.png', P3)
 ```
+
+### DISTIRBUCIJA OBRAZOVANJA ISPITANIKA
+
+```{r}
+P4 = ggplot(Anketa, aes(x=Obrazovanje)) +
+  geom_bar(stat='count', fill = '#151F30') +
+  theme_minimal() +
+  ylab('Broj ispitanika')
+
+P4
+
+```
+
+### DISTRIBUCIJA DEMOGRAFSKIH POKAZATELJA ISPITANIKA
+
+```{r}
+P1 + P2 + P3 + P4
+ggsave('Tablica_demografija_part1.png', P1 + P2 + P3 + P4 )
+```
+
+
+
 ### DISTRIBUCIJA BRAČNOG STATUSA ISPITANIKA
 ```{r}
-P4 = ggplot(Anketa, aes(x=BračniStatus, fill=BračniStatus)) + 
+P5 = ggplot(Anketa, aes(x=BračniStatus, fill=BračniStatus)) + 
   geom_bar(stat = 'count') +
   theme_minimal() +
   ylab('Broj ispitanika') + 
   xlab('Bračni status') + 
   scale_fill_manual(values = c('Neoženjen/Neudata' = '#151F30', 'Oženjen/Udata/Izvanbračna zajednica' = '#103778', 'Razveden/a' = '#0593A2', 'Udovac/Udovica' = '#FF7A48'))
 
-P4
-ggsave('Tablica4.png', P4)
+P5
+ggsave('Tablica4.png', P5)
 ```
 
+### DISTRIBUCIJA RADNOG MJESTA ISPITANIKA
+```{r}
+P6 = ggplot (Anketa, aes(x=RadnoMjesto)) +
+  geom_bar(stat = 'count', fill = '#151F30') + 
+  theme_minimal() +
+  ylab('Broj ispitanika') +
+  xlab('Radno mjesto')
+
+P6
+```
+
+### DISTRIBUCIJA VRSTE POSLA ISPITANIKA
 
 ```{r}
+P7 = ggplot(Anketa, aes(x=VrstaPosla)) +
+  geom_bar(stat = 'count', fill = '#151F30') +
+  theme_minimal() +
+  ylab('Broj ispitanika') +
+  xlab('Vrsta posla') 
 
-library(patchwork)
+P7
+```
 
-ggsave("test.png",P1 + P2 + P3  + P4,width = 10,height = 10)
+### DISTRIBUCIJA DEMOGRAFSKIH POKAZATELJA ISPITANIKA PART 2
+
+```{r}
+P5 + P6 + P7
+ggsave('Tablica_demografija_part2.png', P5 / (P6 + P7), height = 8, width = 12)
 ```
 
 
