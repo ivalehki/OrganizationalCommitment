@@ -2,6 +2,8 @@
 title: "ANALIZA"
 output: html_document
 date: "2025-11-30"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -10,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Učitavanje rezultata ankete
 
-Funkcija koja mi označava mjesto u podacima za koje vrijedi filter koji unesem: Anketa[which(anketa$Spol) == 'a'), 'Spol'] - dakle, prvi dio uglate zagrade označava redove u kojima je upisana vrijednost a, a drugi dio uglade zagrade je označena kolona koju pretražujemo.
+Funkcija koja mi označava mjesto u podacima za koje vrijedi filter koji unesem: Anketa[which(anketa$Spol) == 'a'), 'Spol'] - dakle, prvi dio uglate zagrade označava redove u kojima je upisana vrijednost a, a drugi dio uglate zagrade je označena kolona koju pretražujemo.
 ```{r }
 library(readxl)
 library(tidyverse)
@@ -50,6 +52,11 @@ Anketa[which(Anketa$VrstaPosla == 'c'), 'VrstaPosla'] = 'Određeno'
 Anketa[which(Anketa$VrstaPosla == 'd'), 'VrstaPosla'] = 'Neodređeno'
 
 ```
+
+KOLOR PALETA SE ZOVE WATER & RUST
+#151F30 (TAMNO PLAVA), #103778 (SVJETLIJE PLAVA), #0593A2 (SVIJETLO PLAVA), #FF4F16 (NARANČASTA), #E3371E (CIGLENO CRVENA) 
+
+
 
 # DISTRIBUCIJA SPOLA ISPITANIKA
 ```{r}
@@ -148,4 +155,40 @@ P5 + P6 + P7
 ggsave('Tablica_demografija_part2.png', P5 / (P6 + P7), height = 8, width = 12)
 ```
 
+### RAČUNANJE PROSJEČNOG STUPNJA SLAGANJA ISPITANIKA PO KOMPONENTAMA (AF, NORM, KONT)  
+```{r}
+Anketa[,'AF_rez'] = rowMeans(Anketa[,c(8:13)])
+Anketa[, 'Kont_rez']= rowMeans(Anketa[, c(14:19)])
+Anketa[, 'Norm_rez']= rowMeans(Anketa[,c(20:25)])
+```
+
+### USPOREDBA PROSJEČNIH STUPNJEVA SLAGANJA PO DEMOGRAFIJI
+
+```{r}
+library (ggpubr) 
+hist(Anketa$AF_rez)
+
+ggplot(Anketa, aes(x=Spol, y=AF_rez, fill=Spol))+
+  geom_boxplot()+
+  stat_compare_means(method = 't.test')+
+  theme_minimal()+
+ylab('Stupanj afektivne predanosti')+
+scale_fill_manual(values = c('Muško'='#151F30', 'Žensko'='#FF7A48'))
+```
+
+### USPOREDBA PROSJEČNIH STUPNJEVA SLAGANJA PREMA RADNOM MJESTU
+
+```{r}
+library(ggpubr)
+hist(Anketa$RadnoMjesto)
+
+ggplot(Anketa, aes(x=RadnoMjesto, y=AF_rez, fill =RadnoMjesto))+
+  geom_boxplot()+
+  geom_point()+
+  stat_compare_means(method = 't.test')+
+  theme_minimal()+
+ylab('Stupanj afektivne predanosti')+
+scale_fill_manual(values = c('Izvršno'='#103778', 'Rukovodeće'='#0593A2'))
+
+```
 
