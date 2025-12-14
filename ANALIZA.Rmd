@@ -155,6 +155,61 @@ P5 + P6 + P7
 ggsave('Tablica_demografija_part2.png', P5 / (P6 + P7), height = 8, width = 12)
 ```
 
+### ANALIZA INDIVIDUALNIH ODGOVORA ISPITANIKA (PROSJEK/MEAN, SETOVI PITANJA - AFEKTIVNE KOMPONENTE)
+```{r}
+ggplot(Anketa)+
+ stat_summary( aes(x ='1. Bio/la bih jako sretan/na kada bih proveo/la ostatak karijere u tvrtki u kojoj radim.', y=`8`), fun = "mean", geom = "bar", fill = '#103778' ) +
+ stat_summary( aes(x ='2. Zaista osjećam da su problemi koje ima moja tvrtka ujedno i moji problemi.', y=`9`), fun = "mean", geom = "bar", fill = '#103778' ) +
+ stat_summary( aes(x ='3. Osjećam se kao „dio obitelji“ u ovoj tvrtki.', y=`10`), fun = "mean", geom = "bar", fill = '#103778' ) +
+ stat_summary( aes(x ='4. Osjećam emocionalnu povezanost prema svojoj tvrtki.', y=`11`), fun = "mean", geom = "bar", fill = '#103778' ) +
+ stat_summary( aes(x ='5. Ova tvrtka ima veliko osobno značenje za mene.', y=`12`), fun = "mean", geom = "bar", fill = '#103778' ) +
+ stat_summary( aes(x ='6. Imam snažan osjećaj da pripadam tvrtki u kojoj radim.', y=`13`), fun = "mean", geom = "bar", fill = '#103778') +
+ theme_minimal() + 
+ coord_flip()+
+ xlab("") + 
+ ylab("Prosječna ocjena")
+ 
+
+```
+
+
+###### ANALIZA INDIVIDUALNIH ODGOVORA ISPITANIKA (PROSJEK/MEAN, SETOVI PITANJA - KONTINUIRANE KOMPONENTE)
+
+```{r}
+ggplot(Anketa)+
+ stat_summary( aes(x ='7. Bilo bi mi jako teško (nezgodno) sada napustiti posao, čak i kada bi mi to bila želja. ', y=`14`), fun = "mean", geom = "bar", fill = '#FF7A48' ) +
+ stat_summary( aes(x ='8. Previše bi mi se toga u životu poremetilo kada bih otišao iz svoje tvrtke.', y=`15`), fun = "mean", geom = "bar", fill = '#FF7A48' ) +
+ stat_summary( aes(x ='9. Trenutačno je razlog moga ostanka u tvrtki stvar nužnosti koliko i želje.', y=`16`), fun = "mean", geom = "bar", fill = '#FF7A48' ) +
+ stat_summary( aes(x ='10. Smatram da imam premalo drugih mogućnosti da bih razmatrao/la o odlasku iz tvrtke.', y=`17`), fun = "mean", geom = "bar", fill = '#FF7A48' ) +
+ stat_summary( aes(x ='11. Jedna od nekoliko negativnih posljedica napuštanja posla u tvrtki će biti mala mogućnost za pronaći posao negdje drugdje.', y=`18`), fun = "mean", geom = "bar", fill = '#FF7A48' ) +
+ stat_summary( aes(x ='12. Jedan od glavnih razloga što ću nastaviti raditi u ovoj tvrtki je taj što bi odlazak zahtijevao previše osobnog žrtvovanja.', y=`19`), fun = "mean", geom = "bar", fill = '#FF7A48') +
+ theme_minimal() + 
+ coord_flip()+
+ xlab("") + 
+ ylab("Prosječna ocjena")
+```
+
+### RAČUNANJE PROSJEČNIH VRIJEDNOSTI PO PITANJIMA IZ SETA KONTINUIRANE PREDANOSTI
+```{r}
+cat( "7." ,mean(Anketa$`14`))
+cat( "8." ,mean(Anketa$`15`) )
+cat( "9." ,mean(Anketa$`16`))
+cat( "10." ,mean(Anketa$`17`))
+cat( "11." ,mean(Anketa$`18`))
+cat( "12." ,mean(Anketa$`19`))
+```
+
+
+### RAČUNANJE PROSJEČNIH VRIJEDNOSTI PO PITANJIMA IZ SETA AFEKTIVNE PREDANOSTI
+```{r}
+cat( "1." ,mean(Anketa$`8`))
+cat( "2." ,mean(Anketa$`9`) )
+cat( "3." ,mean(Anketa$`10`))
+cat( "4." ,mean(Anketa$`11`))
+cat( "5." ,mean(Anketa$`12`))
+cat( "6." ,mean(Anketa$`13`))
+```
+
 ### RAČUNANJE PROSJEČNOG STUPNJA SLAGANJA ISPITANIKA PO KOMPONENTAMA (AF, NORM, KONT)  
 ```{r}
 Anketa[,'AF_rez'] = rowMeans(Anketa[,c(8:13)])
@@ -182,7 +237,7 @@ scale_fill_manual(values = c('Muško'='#151F30', 'Žensko'='#FF7A48'))
 library(ggpubr)
 hist(Anketa$RadnoMjesto)
 
-ggplot(Anketa, aes(x=RadnoMjesto, y=AF_rez, fill =RadnoMjesto))+
+ggplot(Anketa, aes(x=RadnoMjesto, y=Kont_rez, fill =RadnoMjesto))+
   geom_boxplot()+
   geom_point()+
   stat_compare_means(method = 't.test')+
