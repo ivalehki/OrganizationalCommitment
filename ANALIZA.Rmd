@@ -27,7 +27,7 @@ Anketa <- read_excel("ANKETA_ODGOVORI.xlsx")
 ```{r}
 Anketa[which(Anketa$Spol == 'a'), 'Spol'] = 'Muško'
 Anketa[which(Anketa$Spol == 'b'), 'Spol'] = 'Žensko'
-Anketa[which(Anketa$Dob == 'a'), 'Dob'] = '>=30'
+Anketa[which(Anketa$Dob == 'a'), 'Dob'] = '<=30'
 Anketa[which(Anketa$Dob == 'b'), 'Dob'] = '31-40'
 Anketa[which(Anketa$Dob == 'c'), 'Dob'] = '41-50'
 Anketa[which(Anketa$Dob == 'd'), 'Dob'] = '>=51'
@@ -189,14 +189,19 @@ ggplot(Anketa)+
  ylab("Prosječna ocjena")
 ```
 
-### RAČUNANJE PROSJEČNIH VRIJEDNOSTI PO PITANJIMA IZ SETA KONTINUIRANE PREDANOSTI
+###### ANALIZA INDIVIDUALNIH ODGOVORA ISPITANIKA (PROSJEK/MEAN, SETOVI PITANJA - NORMATIVNE KOMPONENTE)
 ```{r}
-cat( "7." ,mean(Anketa$`14`))
-cat( "8." ,mean(Anketa$`15`) )
-cat( "9." ,mean(Anketa$`16`))
-cat( "10." ,mean(Anketa$`17`))
-cat( "11." ,mean(Anketa$`18`))
-cat( "12." ,mean(Anketa$`19`))
+ggplot(Anketa)+
+ stat_summary( aes(x ='13. Osjećam obavezu da ostanem u svojoj tvrtki.', y=`20`), fun = "mean", geom = "bar", fill = '#0593A2' ) +
+ stat_summary( aes(x ='14. Čak i kada bih imao/la određenu korist od odlaska, osjećam da to ne bi bilo u redu.', y=`21`), fun = "mean", geom = "bar", fill = '#0593A2' ) +
+ stat_summary( aes(x ='15. Osjećati ću se krivo ako sada napustim svoju tvrtku.', y=`22`), fun = "mean", geom = "bar", fill = '#0593A2' ) +
+ stat_summary( aes(x ='16. Ova organizacija zaslužuje moju lojalnost.', y=`23`), fun = "mean", geom = "bar", fill = '#0593A2' ) +
+ stat_summary( aes(x ='17. Ne bih mogao/la napustiti svoju tvrtku sada, jer imam osjećaj obveze (dugovanja) prema njoj.', y=`24`), fun = "mean", geom = "bar", fill = '#0593A2' ) +
+ stat_summary( aes(x ='18. Mnogo dugujem ovoj tvrtki.', y=`25`), fun = "mean", geom = "bar", fill = '#0593A2') +
+ theme_minimal() + 
+ coord_flip()+
+ xlab("") + 
+ ylab("Prosječna ocjena")
 ```
 
 
@@ -208,6 +213,28 @@ cat( "3." ,mean(Anketa$`10`))
 cat( "4." ,mean(Anketa$`11`))
 cat( "5." ,mean(Anketa$`12`))
 cat( "6." ,mean(Anketa$`13`))
+```
+
+#KONKATINEJT!!! #CONCATINATE!!! >> LINK THINGS, CHAIN - SPOJITI
+
+### RAČUNANJE PROSJEČNIH VRIJEDNOSTI PO PITANJIMA IZ SETA KONTINUIRANE PREDANOSTI
+```{r}
+cat( "7." ,mean(Anketa$`14`))
+cat( "8." ,mean(Anketa$`15`) )
+cat( "9." ,mean(Anketa$`16`))
+cat( "10." ,mean(Anketa$`17`))
+cat( "11." ,mean(Anketa$`18`))
+cat( "12." ,mean(Anketa$`19`))
+```
+
+### RAČUNANJE PROSJEČNIH VRIJEDNOSTI PO PITANJIMA IZ SETA NORMATIVNE PREDANOSTI
+```{r}
+cat( "13." ,mean(Anketa$`20`))
+cat( "14." ,mean(Anketa$`21`))
+cat( "15." ,mean(Anketa$`22`))
+cat( "16." ,mean(Anketa$`23`))
+cat( "17." ,mean(Anketa$`24`))
+cat( "18." ,mean(Anketa$`25`))
 ```
 
 ### RAČUNANJE PROSJEČNOG STUPNJA SLAGANJA ISPITANIKA PO KOMPONENTAMA (AF, NORM, KONT)  
@@ -246,4 +273,251 @@ ylab('Stupanj afektivne predanosti')+
 scale_fill_manual(values = c('Izvršno'='#103778', 'Rukovodeće'='#0593A2'))
 
 ```
+
+
+### PROSJECI SVIH SETOVA TVRDNJI PO KOMPONENTAMA
+```{r}
+mean(c(Anketa$`20`, Anketa$`21`, Anketa$`22`, Anketa$`23`, Anketa$`24`, Anketa$`25`))
+```
+
+### PROSJECI SVE TRI OCJENE KOMPONENTI PREDANOSTI
+```{r}
+mean(Anketa$AF_rez)
+mean(Anketa$Kont_rez)
+mean(Anketa$Norm_rez)
+```
+
+### HISTOGRAMI OCJENA KOMPONENTI PREDANOSTI
+```{r}
+P1=ggplot(Anketa, aes(x=AF_rez)) +
+  geom_histogram(bins=10, fill = '#103778', color = "black") +
+  geom_vline(xintercept = mean(Anketa$AF_rez),linetype="dashed", linewidth = 1) +  
+  theme_minimal() +
+  ylab('Broj ispitanika') +
+  xlab('Afektivna ocjena') 
+
+P2=ggplot(Anketa, aes(x=Kont_rez)) +
+  geom_histogram(bins=10, fill = '#103778', color = "black") +
+  geom_vline(xintercept = mean(Anketa$AF_rez),linetype="dashed", linewidth = 1) +
+  theme_minimal() +
+  ylab('Broj ispitanika') +
+  xlab('Kontinuirana ocjena') 
+
+P3=ggplot(Anketa, aes(x=Norm_rez)) +
+  geom_histogram(bins=10, fill = '#103778', color = "black") +
+  geom_vline(xintercept = mean(Anketa$AF_rez),linetype="dashed", linewidth = 1) +
+  theme_minimal() +
+  ylab('Broj ispitanika') +
+  xlab('Normativna ocjena') 
+
+P1+P2+P3
+
+```
+
+
+
+### PRIKAZ OCJENA PO RADNOM STAŽU
+```{r}
+library(ggpubr)
+
+Anketa$RadniStažMerge = ifelse(Anketa$RadniStaž %in% c("<=5", "6-10"), "<10", ">10") 
+
+P1 = ggplot(Anketa, aes(x=RadniStažMerge, y=AF_rez, fill = RadniStažMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Radni Staž") +
+  ylab("Afektivna ocjena") +
+  scale_fill_manual(values = c('<10' = '#103778', '>10' = '#0593A2')) +
+  stat_compare_means(method = "t.test")+
+  theme(legend.position = "none")
+
+P2 = ggplot(Anketa, aes(x=RadniStažMerge, y=Kont_rez, fill = RadniStažMerge)) +
+  geom_boxplot() +
+  geom_point() +
+  theme_minimal() +
+  xlab("Radni Staž") + 
+  ylab("Kontinuirana ocjena") +
+  scale_fill_manual(values = c('<10' = '#103778', '>10' = '#0593A2')) +
+  stat_compare_means(method = "t.test")+
+  theme(legend.position = "none")
+
+P3 = ggplot(Anketa, aes(x=RadniStažMerge, y=Norm_rez, fill = RadniStažMerge)) +
+  geom_boxplot() +
+  geom_point() +
+  theme_minimal() +
+  xlab("Radni Staž") +
+  ylab("Normativna ocjena") + 
+  scale_fill_manual(values = c('<10' = '#103778', '>10' = '#0593A2')) +
+  stat_compare_means(method = "t.test")+
+  theme(legend.position = "none")
+
+P1 + P2 + P3
+
+```
+
+### PRIKAZ OCJENA PO SPOLU
+
+```{r}
+P1 = ggplot(Anketa, aes(x=Spol, y=AF_rez, fill = Spol)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Spol") +
+  ylab("Afektivna ocjena") +
+  scale_fill_manual(values = c('Muško' = '#103778', 'Žensko' = '#0593A2')) +
+  stat_compare_means(method = "t.test")+
+  theme(legend.position = "none")
+
+P2 = ggplot(Anketa, aes(x=Spol, y=Kont_rez, fill = Spol)) +
+  geom_boxplot() +
+  geom_point() +
+  theme_minimal() +
+  xlab("Spol") + 
+  ylab("Kontinuirana ocjena") +
+  scale_fill_manual(values = c('Muško' = '#103778', 'Žensko' = '#0593A2')) +
+  stat_compare_means(method = "t.test")+
+  theme(legend.position = "none")
+
+P3 = ggplot(Anketa, aes(x=Spol, y=Norm_rez, fill = Spol)) +
+  geom_boxplot() +
+  geom_point() +
+  theme_minimal() +
+  xlab("Spol") +
+  ylab("Normativna ocjena") + 
+  scale_fill_manual(values = c('Muško' = '#103778', 'Žensko' = '#0593A2')) +
+  stat_compare_means(method = "t.test")+
+  theme(legend.position = "none")
+
+
+P1 + P2 + P3
+
+```
+
+### PRIKAZ OCJENA PO DOBI
+
+```{r}
+Anketa$DobMerge = ifelse(Anketa$Dob %in% c('<=30', '31-40'), "<=40", ">40" )
+
+P1 = ggplot(Anketa, aes(x=DobMerge, y=AF_rez, fill = DobMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Dob") +
+  ylab("Afektivna ocjena") +
+  scale_fill_manual(values = c('<=40' = '#103778', '>40' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  theme(legend.position = "none")
+
+P2 = ggplot(Anketa, aes(x=DobMerge, y=Kont_rez, fill = DobMerge)) +
+  geom_boxplot() +
+  geom_point() +
+  theme_minimal() +
+  xlab("Dob") + 
+  ylab("Kontinuirana ocjena") +
+  scale_fill_manual(values = c('<=40' = '#103778', '>40' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  theme(legend.position = "none")
+
+P3 = ggplot(Anketa, aes(x=DobMerge, y=Norm_rez, fill = DobMerge)) +
+  geom_boxplot() +
+  geom_point() +
+  theme_minimal() +
+  xlab("Dob") +
+  ylab("Normativna ocjena") + 
+  scale_fill_manual(values = c('<=40' = '#103778', '>40' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  theme(legend.position = "none")
+
+
+P1 + P2 + P3
+```
+
+### PRIKAZ OCJENA PO BRAČNOM STATUSU
+
+```{r}
+Anketa$BračniStatusMerge = ifelse(Anketa$BračniStatus %in% c('Oženjen/Udata/Izvanbračna zajednica'),"Zauzeti", "Slobodni" )
+
+P1 = ggplot(Anketa, aes(x=BračniStatusMerge, y=AF_rez, fill = BračniStatusMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Bračni status") +
+  ylab("Afektivna ocjena") +
+  scale_fill_manual(values = c('Zauzeti' = '#103778', 'Slobodni' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  theme(legend.position = "none")
+
+
+P2 = ggplot(Anketa, aes(x=BračniStatusMerge, y=Kont_rez, fill = BračniStatusMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Bračni status") +
+  ylab("Kontinuirana ocjena") +
+  scale_fill_manual(values = c('Zauzeti' = '#103778', 'Slobodni' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  theme(legend.position = "none")
+
+P3 = ggplot(Anketa, aes(x=BračniStatusMerge, y=Norm_rez, fill = BračniStatusMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Bračni status") +
+  ylab("Normativna ocjena") +
+  scale_fill_manual(values = c('Zauzeti' = '#103778', 'Slobodni' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  theme(legend.position = "none")
+
+
+P1 + P2 + P3
+```
+
+### PRIKAZ OCJENA PO OBRAZOVANJU
+
+```{r}
+Anketa$ObrazovanjeMerge = ifelse(Anketa$Obrazovanje %in% c('KV', 'SSS'),"Niži S. O.", "Viši S. O." )
+
+P1 = ggplot(Anketa, aes(x=ObrazovanjeMerge, y=AF_rez, fill = ObrazovanjeMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Stupanj obrazovanja") +
+  ylab("Afektivna ocjena") +
+  scale_fill_manual(values = c('Niži S. O.' = '#103778', 'Viši S. O.' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  theme(legend.position = "none")
+
+
+P2 = ggplot(Anketa, aes(x=ObrazovanjeMerge, y=Kont_rez, fill = ObrazovanjeMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Stupanj obrazovanja") +
+  ylab("Kontinuirana ocjena") +
+  scale_fill_manual(values = c('Niži S. O.' = '#103778', 'Viši S. O.' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  theme(legend.position = "none")
+
+P3 = ggplot(Anketa, aes(x=ObrazovanjeMerge, y=Norm_rez, fill = ObrazovanjeMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Stupanj obrazovanja") +
+  ylab("Normativna ocjena") +
+  scale_fill_manual(values = c('Niži S. O.' = '#103778', 'Viši S. O.' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  theme(legend.position = "none")
+
+
+P1 + P2 + P3
+```
+
+
+
+
+
+
+
+
 
