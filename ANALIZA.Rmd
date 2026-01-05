@@ -513,6 +513,91 @@ P3 = ggplot(Anketa, aes(x=ObrazovanjeMerge, y=Norm_rez, fill = ObrazovanjeMerge)
 P1 + P2 + P3
 ```
 
+```{r}
+Anketa$ObrazovanjeMerge = ifelse(Anketa$Obrazovanje %in% c('KV', 'SSS'),"Niži S. O.", "Viši S. O." )
+
+Anketa$BračniStatusMerge = ifelse(Anketa$BračniStatus %in% c('Oženjen/Udata/Izvanbračna zajednica'),"Zauzeti", "Slobodni" )
+
+Anketa$DobMerge = ifelse(Anketa$Dob %in% c('<=30', '31-40'), "<=40", ">40" )
+
+Anketa$RadniStažMerge = ifelse(Anketa$RadniStaž %in% c("<=5", "6-10"), "<10", ">10")
+
+### PRIKAZ 12: T-test utjecaj grupiranih pokazatelja bračnog statusa i radnog staža na kontinuiranu predanost
+ggplot(Anketa, aes(x=BračniStatusMerge, y=Kont_rez, fill = RadniStažMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Bračni status") +
+  ylab("Kontinuirana ocjena") +
+  scale_fill_manual(values = c('<10' = '#103778', '>10' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  guides(fill = guide_legend(title = "Radni staž"))
+
+
+### PRIKAZ 13: T-test utjecaj grupiranih pokazatelja bračnog statusa i radnog staža na normativnu predanost
+ggplot(Anketa, aes(x=BračniStatusMerge, y=Norm_rez, fill = RadniStažMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Bračni status") +
+  ylab("Normativna ocjena") +
+  scale_fill_manual(values = c('<10' = '#103778', '>10' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  guides(fill = guide_legend(title = "Radni staž"))
+
+
+### PRIKAZ 14: T-test utjecaj grupiranih pokazatelja obrazovanja i radnog staža na normativnu predanost
+ggplot(Anketa, aes(x=ObrazovanjeMerge, y=Norm_rez, fill = RadniStažMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Obrazovanje") +
+  ylab("Normativna ocjena") +
+  scale_fill_manual(values = c('<10' = '#103778', '>10' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  guides(fill = guide_legend(title = "Radni staž"))
+
+
+Anketa$DobMerge = ifelse(Anketa$Dob %in% c('>=51'), ">=51", "<51" )
+
+### PRIKAZ 15: T-test utjecaj grupiranih pokazatelja dobi i bračnog statusa na af predanost
+ggplot(Anketa, aes(x=BračniStatusMerge, y=AF_rez, fill = DobMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Bračni status") +
+  ylab("Afektivna ocjena") +
+  scale_fill_manual(values = c('>=51' = '#103778', '<51' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  guides(fill = guide_legend(title = "Dob"))
+
+### PRIKAZ 16: T-test utjecaj grupiranih pokazatelja dobi i bračnog statusa na normativnu predanost
+ggplot(Anketa, aes(x=BračniStatusMerge, y=Norm_rez, fill = DobMerge)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Bračni status") +
+  ylab("Normativna ocjena") +
+  scale_fill_manual(values = c('>=51' = '#103778', '<51' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  guides(fill = guide_legend(title = "Dob"))
+
+### PRIKAZ 17: T-test utjecaj grupiranih pokazatelja spola i radnog staža na afektivnu predanost
+ggplot(Anketa, aes(x=RadniStažMerge, y=AF_rez, fill = Spol)) + 
+  geom_boxplot() + 
+  geom_point() +
+  theme_minimal() + 
+  xlab("Radni staž") +
+  ylab("Afektivna ocjena") +
+  scale_fill_manual(values = c('Muško' = '#103778', 'Žensko' = '#0593A2')) +
+  stat_compare_means(method = "t.test") +
+  guides(fill = guide_legend(title = "Spol"))
+
+
+### PRIKAZ 18: 
+
+
+```
 
 
 
